@@ -25,6 +25,23 @@ main {
     flex-shrink: 0;
 }
 
+.new-search {
+    right: 0;
+    position: absolute;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 3px 1px #ada7a7;
+    margin: 10px;
+    color: #000000;
+    background-color: #ff9902;
+    text-decoration: none;
+}
+
+.new-search:hover {
+    color: #868484;
+}
+
 .index {
     background: #3b4465;
 }

@@ -6,6 +6,7 @@ product advertising API & aws IAM API
 
 Python template for Amazon Product Advertising API
 (also includes example for Amazon IAM AWS API using IAM credentials)
+Demo: https://cecinestpasun.site/amazon/
 
 ## Disclaimer
 
