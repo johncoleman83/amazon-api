@@ -79,7 +79,6 @@ def build_amazon_signature(canonical_request):
     ).digest()).decode("utf-8")
     return signature
 
-
 def item_search(keywords=None, brand=None, search_index=None):
     """
     type(keywords) = list, []

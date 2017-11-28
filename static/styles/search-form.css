@@ -1,0 +1,365 @@
+@charset "UTF-8";
+/** Amazon Search form
+ *
+ */
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    box-sizing: border-box;
+    border: 0;
+    outline: 0;
+}
+
+
+/* General */
+body {
+    width: 100%;
+    font-family: Roboto, sans-serif;
+    background: #3b4465;
+}
+
+button {
+    position: relative;
+    width: 160px;
+    text-transform: uppercase;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+form {
+    position: relative;
+    width: 375px;
+    height: auto;
+    padding: 20px;
+    background: #d7e7f1;
+    border-radius: 5px;
+}
+
+form label, form input {
+    display: block;
+    opacity: 0;
+}
+
+legend {
+    position: absolute;
+    top: 0;
+    left: -10000px;
+}
+
+label {
+    padding-top: 15px;
+    font-size: 14px;
+    color: #a1b4b4;
+    letter-spacing: 0.5px;
+}
+
+input:not([type="submit"]) {
+    width: 85%;
+    margin: 5px auto 0;
+    padding: 0 15px;
+    line-height: 40px;
+    font-size: 14px;
+    color: #3b4465;
+    background: #eef9fe;
+    border: 1px solid #cddbef;
+    border-radius: 2px;
+}
+
+input[type="submit"] {
+    float: right;
+    width: 120px;
+    margin-top: 30px;
+    line-height: 40px;
+    font-size: 18px;
+    border-radius: 20px;
+}
+
+
+/* Buttons and Inputs */
+.buttons,
+.forms {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    width: 750px;
+    margin: 0 auto;
+}
+
+.buttons {
+    height: 100px;
+    padding-top: 70px;
+    text-align: center;
+}
+
+.forms {
+    padding-top: 50px;
+}
+
+.item-search-link,
+.item-lookup-link {
+    cursor: pointer;
+    color: #bbb;
+}
+
+.item-search-link.item-search-button-active,
+.item-lookup-link.item-lookup-button-active {
+    cursor: default;
+    color: #fff;
+}
+
+.item-search-underline,
+.item-lookup-underline {
+    position: absolute;
+    top: 35px;
+    left: 30px;
+    height: 2px;
+    width: 100px;
+    opacity: 0;
+    background: #c8dfed;
+}
+
+.item-search-underline.item-search-button-active {
+    animation: itemSearchUnderlineActive .2s linear .1s forwards;
+    transform-origin: right;
+}
+
+.item-search-underline.item-lookup-button-active {
+    animation: itemSearchUnderlineInactive .3s linear forwards;
+    transform-origin: right;
+}
+
+.item-lookup-underline.item-lookup-button-active {
+    animation: itemLookupUnderlineActive .2s linear .1s forwards;
+    transform-origin: left;
+}
+
+.item-lookup-underline.item-search-button-active {
+    animation: itemLookupUnderlineInactive .3s linear forwards;
+    transform-origin: left;
+}
+
+.item-search-button-active {
+    animation: buttonsMoveToRight .3s linear forwards;
+}
+
+.item-lookup-button-active {
+    animation: buttonsMoveToLeft .3s linear forwards;
+}
+
+.item-search-form.item-search-button-active label,
+.item-search-form.item-search-button-active input {
+    animation: fielsetSlideToRight .5s linear 0.25s forwards;
+}
+
+.item-lookup-form.item-lookup-button-active label,
+.item-lookup-form.item-lookup-button-active input {
+    animation: fieldsetSlideToLeft .5s linear 0.25s forwards;
+}
+
+.item-search-form input[type="submit"] {
+    color: #000000;
+    background: #ff9902;
+    box-shadow: 0 0 2px 1px #a5a7a1;
+
+}
+
+.item-lookup-form input[type="submit"] {
+    color: #000000;
+    background: #ff9902;
+    box-shadow: 0 0 2px 1px #a5a7a1;
+}
+
+.item-search-form {
+    animation: itemSearchToBottom .4s linear forwards;
+}
+
+.item-lookup-form {
+    animation: itemLookupToBottom .4s linear forwards;
+}
+
+.item-search-form.item-search-button-active {
+    animation: itemSearchToTop .4s linear forwards;
+}
+
+.item-lookup-form.item-lookup-button-active {
+    animation: itemLookupToTop .4s linear forwards;
+}
+
+
+/* Animations */
+@keyframes itemSearchUnderlineActive {
+    0% {
+	transform: scale(0);
+	opacity: 1;
+    }
+
+    100% {
+	transform: scale(1);
+	opacity: 1;
+    }
+}
+
+@keyframes itemLookupUnderlineActive {
+    0% {
+	transform: scale(0);
+	opacity: 1;
+    }
+    100% {
+	transform: scale(1);
+	opacity: 1;
+    }
+}
+
+@keyframes itemSearchUnderlineInactive {
+    0% {
+	transform: scale(1);
+	opacity: 1;
+    }
+    100% {
+	transform: scale(0);
+	opacity: 1;
+    }
+}
+
+@keyframes itemLookupUnderlineInactive {
+    0% {
+	transform: scale(1);
+	opacity: 1;
+    }
+    100% {
+	transform: scale(0);
+	opacity: 1;
+    }
+}
+
+@keyframes buttonsMoveToRight {
+    0% {
+	transform: translate(0);
+    }
+    100% {
+	transform: translate(50px);
+    }
+}
+
+@keyframes buttonsMoveToLeft {
+    0% {
+	transform: translate(0);
+    }
+    100% {
+	transform: translate(-50px);
+    }
+}
+
+@keyframes fielsetSlideToRight {
+    0% {
+	transform: translate(-15px);
+	opacity: 0;
+    }
+    100% {
+	transform: translate(0);
+	opacity: 1;
+    }
+}
+
+@keyframes fieldsetSlideToLeft {
+    0% {
+	transform: translate(15px);
+	opacity: 0;
+    }
+    100% {
+	transform: translate(0);
+	opacity: 1;
+    }
+}
+
+@keyframes itemSearchToBottom {
+    0% {
+	transform: translate(100px);
+	z-index: 10;
+	background-color: #fff;
+    }
+    49% {
+	transform: translate(0);
+	z-index: 10;
+    }
+    50% {
+	transform: translate(0);
+	z-index: 1;
+    }
+    100% {
+	transform: translate(100px, 20px);
+	z-index: 1;
+	background-color: #d7e7f1;
+    }
+}
+
+@keyframes itemLookupToBottom {
+    0% {
+	transform: translate(-100px);
+	z-index: 10;
+	height: 360px;
+	background-color: #fff;
+    }
+    49% {
+	transform: translate(0);
+	z-index: 10;
+    }
+    50% {
+	transform: translate(0);
+	z-index: 1;
+    }
+    100% {
+	transform: translate(-100px, 20px);
+	z-index: 1;
+	height: 100%;
+	background-color: #d7e7f1;
+    }
+}
+
+@keyframes itemSearchToTop {
+    0% {
+	transform: translate(100px, 20px);
+	z-index: 1;
+	background-color: #d7e7f1;
+    }
+    49% {
+	transform: translate(0);
+	z-index: 1;
+    }
+    50% {
+	transform: translate(0);
+	z-index: 10;
+    }
+    100% {
+	transform: translate(100px);
+	z-index: 10;
+	background-color: #fff;
+    }
+}
+
+@keyframes itemLookupToTop {
+    0% {
+	transform: translate(-100px, 20px);
+	z-index: 1;
+	background-color: #d7e7f1;
+    }
+    25% {
+	height: 280px;
+    }
+    49% {
+	transform: translate(0);
+	z-index: 1;
+    }
+    50% {
+	transform: translate(0);
+	z-index: 10;
+    }
+    100% {
+	transform: translate(-100px);
+	z-index: 10;
+	height: 100%;
+	background-color: #fff;
+    }
+}

@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block content %}
+<MAIN>
+  <DIV class="container">
+    <DIV class="row">
+      <div class="buttons item-search-button-active" data-action="animated">
+	<button class="item-search">
+	  <span class="item-search-link item-search-button-active" data-action="animated">Item Search</span>
+	  <span class="item-search-underline item-search-button-active" data-action="animated"></span>
+	</button>
+	<button class="item-lookup">
+	  <span class="item-lookup-link item-search-button-active" data-action="animated">Item Lookup</span>
+	  <span class="item-lookup-underline item-search-button-active" data-action="animated"></span>
+	</button>
+      </div>
+      <div class="forms">
+	<form class="item-search-form item-search-button-active" action="#" method="post" data-action="animated">
+	  <fieldset>
+	    <legend>Item Search form.  Please enter at least Brand or keywords.</legend>
+	    <label for="keywords">Keywords</label>
+	    <input id="keywords"
+		   type="text"
+		   name="keywords"
+		   placeholder="e.g. [Mirrorless Camera, Fujifilm]">
+	    <label for="brand">Brand</label>
+	    <input id="brand"
+		   type="text"
+		   name="brand"
+		   placeholder="e.g. Lacoste">
+	    <label for="search-index">Search Index</label>
+	    <input id="search-index"
+		   type="text"
+		   name="search-index"
+		   placeholder="e.g. FashionWomen">
+	  </fieldset>
+	  <input type="submit" value="Search">
+	</form>
+	<form class="item-lookup-form" action="#" method="post" data-action="animated">
+	  <fieldset>
+	    <legend>Item Lookup Form based on Item Unique ASIN #</legend>
+	    <label for="asin-num">Unique ASIN #</label>
+	    <input id="asin-num"
+		   type="text"
+		   name="asin-num"
+		   placeholder="e.g. L8WGF1">
+	  </fieldset>
+	  <input type="submit" value="Search">
+	</form>
+      </div>
+<!--      <p class="error_message">
+	To test, you may login with credentials:
+	<br>un: 'username@test.com' pw: 'password'
+	<br>(quotes are not a part of the credential)</p>
+      {% if message is not none %}
+      <p class="error_message">{{ message }}</p>
+      {% endif %}-->
+    </DIV>
+  </DIV>
+</MAIN>
+{% endblock %}
