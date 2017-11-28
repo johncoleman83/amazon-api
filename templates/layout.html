@@ -13,7 +13,7 @@
     <LINK
       rel="shortcut icon"
       href="{{ url_for('static',
-	    filename='images/icon.png') }}?{{ cache_id }}">
+	    filename='images/icon.jpg') }}?{{ cache_id }}">
 
     <!-- IMPORT JQUERY -->
 
@@ -21,9 +21,6 @@
 		 filename='scripts/jquery-3.2.1.min.js') }}"></SCRIPT>
 
     <!-- JAVASCRIPT FILES -->
-
-    <SCRIPT src="{{ url_for('static',
-		 filename='scripts/places.js') }}?{{ cache_id }}"></SCRIPT>
 
     <SCRIPT src="{{ url_for('static',
 		 filename='scripts/search-form.js') }}?{{ cache_id }}"></SCRIPT>
@@ -51,7 +48,7 @@
     <LINK
       rel="stylesheet"
       href="{{ url_for('static',
-	    filename='styles/places.css') }}?{{ cache_id }}">
+	    filename='styles/results.css') }}?{{ cache_id }}">
     <LINK
       rel="stylesheet"
       href="{{ url_for('static',
@@ -85,6 +82,8 @@
     <footer>
       David John Coleman II, <a href="http://www.davidjohncoleman.com/"
 				target="_blank">davidjohncoleman.com</a>
+      | <a href="https://github.com/johncoleman83/amazon-api"
+	 target="_blank">Source Code and Disclaimer</a>
     </footer>
   </BODY>
 </HTML>

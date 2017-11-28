@@ -10,6 +10,7 @@ import sys
 from uuid import uuid4
 
 
+DEFAULT_ERROR = "Uknown Error, Please try again with new search terms"
 # flask setup
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -55,7 +56,7 @@ def main_index():
     """
     cache_id = uuid4()
     if request.method == 'GET':
-        return render_template('index.html', cache_id=cache_id)
+        return render_template('index.html', cache_id=cache_id, message=None)
     if request.method == 'POST':
         action = request.form.get('action')
         if action == 'Search Items':
@@ -67,14 +68,18 @@ def main_index():
             brand = clean_inputs(brand)
             search_index = request.form.get('search-index', None)
             search_index = clean_inputs(search_index)
-            if brand and not search_index or (not brand and not keywords):
-                return render_template('index.html', cache_id=cache_id)
+            if brand and search_index is None:
+                message = "Brand Search must be accompanied by a Search Index"
+                return render_template(
+                    'index.html', cache_id=cache_id, message=message
+                )
             response = amazon_api.item_search(
                 keywords, brand, search_index
             )
             if response is None:
-                error = {"ERROR": "Unknown Error"}
-                amazon_objects = [error]
+                return render_template(
+                    'index.html', cache_id=cache_id, message=DEFAULT_ERROR
+                )
             else:
                 amazon_objects = amazon_api.item_search_response_handler(
                     response
@@ -83,13 +88,22 @@ def main_index():
             asin = request.form.get('asin-num', None)
             asin = clean_inputs(asin)
             if asin is None:
-                return render_template('index.html', cache_id=cache_id)
+                message = "ASIN # must be valid"
+                return render_template(
+                    'index.html', cache_id=cache_id, message=message
+                )
             response = amazon_api.item_lookup(asin)
             amazon_objects = amazon_api.item_lookup_response_handler(response)
         else:
-            error = {"ERROR": "Unknown Error"}
-            amazon_objects = [error]
+            return render_template(
+                'index.html', cache_id=cache_id, message=DEFAULT_ERROR
+            )
         format_amazon_objects(amazon_objects)
+        error = amazon_objects[0].get("ERROR", None)
+        if error:
+            return render_template(
+                'index.html', cache_id=cache_id, message=error
+            )
         return render_template(
             'results.html', cache_id=cache_id, amazon_objects=amazon_objects
         )

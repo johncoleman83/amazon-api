@@ -26,9 +26,6 @@ def build_item_search_querystring(keywords, brand, search_index):
     """
     builds canonical querystring
     """
-    if search_index is None:
-        search_index = "All"
-
     t = datetime.datetime.utcnow()
     amzdate = t.strftime('%Y-%m-%dT%H:%M:%SZ')
     # url encode date format: YYYY-MM-DD'T'HH:MM:SS'Z'
@@ -45,6 +42,8 @@ def build_item_search_querystring(keywords, brand, search_index):
     if keywords is not None:
         keywords = url_encode(','.join(keywords))
         canonical_querystring += 'Keywords={}&'.format(keywords)
+    if search_index is None:
+        search_index = "All"
     canonical_querystring += (
         "Operation=ItemSearch&ResponseGroup={}&SearchIndex={}&"
         "Service=AWSECommerceService&Timestamp={}&Version=2013-08-01"
@@ -229,6 +228,8 @@ def item_search_response_handler(response):
     if valid is not True:
         return [valid]
     search_items = xml_dict.get("ItemSearchResponse").get("Items").get("Item")
+    if search_items is None:
+        return [{"ERROR": "Unknown Error"}]
     amazon_objects = []
     for item in search_items:
         amazon_object = do_handle_amazon_search_item(item)

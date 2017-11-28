@@ -102,6 +102,11 @@
 	</form>
       </div>
     </DIV>
+    {% if message is not none %}
+    <div class="error_message">
+      <p>{{ message }}</p>
+    </div>
+    {% endif %}
   </DIV>
 </MAIN>
 {% endblock %}
