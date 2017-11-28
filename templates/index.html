@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<MAIN>
+<MAIN class="index">
   <DIV class="container">
     <DIV class="row">
       <div class="buttons item-search-button-active" data-action="animated">
@@ -28,12 +28,64 @@
 		   name="brand"
 		   placeholder="e.g. Lacoste">
 	    <label for="search-index">Search Index</label>
-	    <input id="search-index"
-		   type="text"
-		   name="search-index"
-		   placeholder="e.g. FashionWomen">
+	    <select id="search-index"
+		    name="search-index">
+	      <option value="">None</option>
+	      <option value="All">All</option>
+	      <option value="Wine">Wine</option>
+	      <option value="Wireless">Wireless</option>
+	      <option value="ArtsAndCrafts">ArtsAndCrafts</option>
+	      <option value="Miscellaneous">Miscellaneous</option>
+	      <option value="Electronics">Electronics</option>
+	      <option value="Jewelry">Jewelry</option>
+	      <option value="MobileApps">MobileApps</option>
+	      <option value="Photo">Photo</option>
+	      <option value="Shoes">Shoes</option>
+	      <option value="KindleStore">KindleStore</option>
+	      <option value="Automotive">Automotive</option>
+	      <option value="Vehicles">Vehicles</option>
+	      <option value="Pantry">Pantry</option>
+	      <option value="MusicalInstruments">MusicalInstruments</option>
+	      <option value="DigitalMusic">DigitalMusic</option>
+	      <option value="GiftCards">GiftCards</option>
+	      <option value="FashionBaby">FashionBaby</option>
+	      <option value="FashionGirls">FashionGirls</option>
+	      <option value="GourmetFood">GourmetFood</option>
+	      <option value="HomeGarden">HomeGarden</option>
+	      <option value="MusicTracks">MusicTracks</option>
+	      <option value="UnboxVideo">UnboxVideo</option>
+	      <option value="FashionWomen">FashionWomen</option>
+	      <option value="VideoGames">VideoGames</option>
+	      <option value="FashionMen">FashionMen</option>
+	      <option value="Kitchen">Kitchen</option>
+	      <option value="Video">Video</option>
+	      <option value="Software">Software</option>
+	      <option value="Beauty">Beauty</option>
+	      <option value="Grocery">Grocery</option>
+	      <option value="FashionBoys">FashionBoys</option>
+	      <option value="Industrial">Industrial</option>
+	      <option value="PetSupplies">PetSupplies</option>
+	      <option value="OfficeProducts">OfficeProducts</option>
+	      <option value="Magazines">Magazines</option>
+	      <option value="Watches">Watches</option>
+	      <option value="OutdoorLiving">OutdoorLiving</option>
+	      <option value="Toys">Toys</option>
+	      <option value="SportingGoods">SportingGoods</option>
+	      <option value="PCHardware">PCHardware</option>
+	      <option value="Movies">Movies</option>
+	      <option value="Books">Books</option>
+	      <option value="Collectibles">Collectibles</option>
+	      <option value="Handmade">Handmade</option>
+	      <option value="Fashion">Fashion</option>
+	      <option value="Baby">Baby</option>
+	      <option value="Appliances">Appliances</option>
+	      <option value="WirelessAccessories">WirelessAccessories</option>
+	      <option value="HealthPersonalCare">HealthPersonalCare</option>
+	    </select>
 	  </fieldset>
-	  <input type="submit" value="Search">
+	  <input name="action"
+		 type="submit"
+		 value="Search Items">
 	</form>
 	<form class="item-lookup-form" action="#" method="post" data-action="animated">
 	  <fieldset>
@@ -44,16 +96,11 @@
 		   name="asin-num"
 		   placeholder="e.g. L8WGF1">
 	  </fieldset>
-	  <input type="submit" value="Search">
+	  <input name="action"
+		 type="submit"
+		 value="Lookup Item">
 	</form>
       </div>
-<!--      <p class="error_message">
-	To test, you may login with credentials:
-	<br>un: 'username@test.com' pw: 'password'
-	<br>(quotes are not a part of the credential)</p>
-      {% if message is not none %}
-      <p class="error_message">{{ message }}</p>
-      {% endif %}-->
     </DIV>
   </DIV>
 </MAIN>

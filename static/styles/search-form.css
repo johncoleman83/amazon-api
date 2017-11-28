@@ -17,7 +17,6 @@
 body {
     width: 100%;
     font-family: Roboto, sans-serif;
-    background: #3b4465;
 }
 
 button {
@@ -53,6 +52,19 @@ label {
     font-size: 14px;
     color: #a1b4b4;
     letter-spacing: 0.5px;
+}
+
+#search-index {
+    width: 85%;
+    height: 37px;
+    margin: 5px 20px;
+    padding: 15px 15px;
+    line-height: 40px;
+    font-size: 14px;
+    color: #3b4465;
+    background: #eef9fe;
+    border: 1px solid #cddbef;
+    border-radius: 2px;
 }
 
 input:not([type="submit"]) {

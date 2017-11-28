@@ -25,6 +25,14 @@ main {
     flex-shrink: 0;
 }
 
+.index {
+    background: #3b4465;
+}
+
+.results {
+    background: #ffffff;
+}
+
 div.container {
     max-width: 1000px;
     margin: 30px auto;

@@ -149,11 +149,11 @@ def item_lookup(asin):
         "&Signature={}".format(urllib.parse.quote_plus(signature))
     )
     request_url = "{}?{}".format(ENDPOINT, canonical_querystring)
-    print('-------------- REQUEST URL ----------------')
-    print(request_url)
     response = requests.get(request_url)
     if response.status_code != 200:
         print("There was an error in the request", file=sys.stderr)
+        print('-------------- REQUEST URL ----------------')
+        print(request_url)
         print("Status Code: {}".format(response.status_code), file=sys.stderr)
         print(response.text)
         return None
@@ -164,32 +164,59 @@ def do_handle_amazon_search_item(item):
     prints amazon response item from items search
     ItemLinks
     """
-    print("-------------- NEW ITEM -------------")
+    amazon_object = {}
     for key, val in item.items():
         if key == "ASIN":
-            asin = val
-            print("Product ASIN: {}".format(asin))
+            amazon_object["ASIN"] = val
         elif key == "DetailPageURL":
-            detailpageurl = val
-            print("Page URL: {}".format(detailpageurl))
+            amazon_object["Detail Page URL"] = val
         elif key == "ItemLinks":
             itemlink = val.get("ItemLink")
             for link_item in itemlink:
                 if link_item.get("Description") == "Technical Details":
-                    print("{} : {}".format(link_item.get("Description"),
-                                           link_item.get("URL"))
-                    )
+                    amazon_object["Technical Details"] = link_item.get("URL")
         elif key == "LargeImage":
-            large_image = val.get("URL")
-            print("Large image: {}".format(large_image))
+            amazon_object["Large Image"] = val.get("URL")
+        elif key == "ItemAttributes":
+            amazon_object["Title"] = val.get("Title")
+            list_price = val.get("ListPrice")
+            trade_in = val.get("TradeInValue")
+            if list_price:
+                amazon_object["Price"] = list_price.get("FormattedPrice")
+            elif trade_in:
+                amazon_object["Price"] = trade_in.get("FormattedPrice")
+            else:
+                amazon_object["Price"] = "No Price"
+    return amazon_object
+
+def response_is_valid(xml_dict):
+    """
+    checks if response has errors, and if so, handles that
+    """
+    item_response = xml_dict.get("ItemSearchResponse")
+    if item_response is None:
+        item_response = xml_dict.get("ItemLookupResponse")
+    request = (
+        item_response.get("Items").get("Request")
+    )
+    errors = request.get("Errors")
+    if errors is None:
+        return True
+    message = errors.get("Error").get("Message")
+    return {"ERROR": message}
+
 
 def item_lookup_response_handler(response):
     """
     handles single item search response
     """
     xml_dict = xmltodict.parse(response.text)
+    valid = response_is_valid(xml_dict)
+    if valid is not True:
+        return [valid]
     search_item = xml_dict.get('ItemLookupResponse').get("Items").get("Item")
-    do_handle_amazon_search_item(search_item)
+    amazon_object = do_handle_amazon_search_item(search_item)
+    return [amazon_object]
 
 
 def item_search_response_handler(response):
@@ -198,9 +225,15 @@ def item_search_response_handler(response):
     """
     # convert xml to python objects
     xml_dict = xmltodict.parse(response.text)
+    valid = response_is_valid(xml_dict)
+    if valid is not True:
+        return [valid]
     search_items = xml_dict.get("ItemSearchResponse").get("Items").get("Item")
+    amazon_objects = []
     for item in search_items:
-        do_handle_amazon_search_item(item)
+        amazon_object = do_handle_amazon_search_item(item)
+        amazon_objects.append(amazon_object)
+    return amazon_objects
 
 
 if __name__ == "__main__":
