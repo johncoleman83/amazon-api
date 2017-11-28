@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """
+AMAZON IAM API from AWS
+NOT PRODUCT ADVERTISING API
 This file contains AWS GET request templates from
+http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
+and
 http://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html
 AWS Version 4 signing example - EC2 API (DescribeRegions)
 """
@@ -117,33 +121,3 @@ r = requests.get(request_url)
 print('\nRESPONSE++++++++++++++++++++++++++++++++++++')
 print('Response code: {}\n'.format(r.status_code))
 print(r.text)
-
-
-
-
-
-
-
-
-
-"""
-# ADD SIGNING INFORMATION TO THE REQUEST: The signing information can be either
-# in a query string value or in a header named Authorization. This code shows
-# how to use a header.
-authorization_header = (
-    "{} Credentials={}/{}, SignedHeaders={}, Signature={}"
-    .format(algorithm, ACCESS_KEY_ID,
-            credential_scope, signed_headers, signature)
-)
-
-
-# The request can include any headers, but MUST include "host", "x-amz-date", 
-# and (for this scenario) "Authorization". "host" and "x-amz-date" must
-# be included in the canonical_headers and signed_headers, as noted
-# earlier. Order here is not significant.
-# Python note: The 'host' header is added automatically by the Python 'requests' library.
-headers = {
-    'x-amz-date': amzdate,
-    'Authorization': authorization_header
-}
-"""

@@ -1,65 +1,141 @@
 #!/usr/bin/env python3
 """
-This file contains AWS GET request templates from
-http://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html
-AWS Version 4 signing example - EC2 API (DescribeRegions)
+Amazon Product Advertising API Example from:
+http://docs.aws.amazon.com/AWSECommerceService/latest/DG/rest-signature.html
+
+canonical_querystring = 'AWSAccessKeyId={}&'.format(ACCESS_KEY_ID)
+canonical_querystring += 'AssociateTag={}&'.format(MY_ASSOCIATE_TAG)
+canonical_querystring += 'ItemId=0679722769&'
+canonical_querystring += 'Operation=ItemLookup&'
+canonical_querystring += 'ResponseGroup=Images%2CItemAttributes%2COffers%2CReviews'
+canonical_querystring += 'Service=AWSECommerceService'
+canonical_querystring += 'Timestamp={}&'.format(amzdate)
+canonical_querystring += 'Version=2013-08-01'
+
+expected result from hash:
+signature = 'j7bZM0LXZ9eXeZruTqWm2DIvDYVUU3wxPPpp+iXxzQc='
 """
 from authentication import ACCESS_KEY_ID, SECRET_ACCESS_KEY, MY_ASSOCIATE_TAG
 import base64
-import sys, os, base64, datetime, hashlib, hmac, urllib.parse
+import datetime
+import hashlib
+import hmac
+import os
 import requests
-
-if all([ACCESS_KEY_ID, SECRET_ACCESS_KEY]) is False:
-    print("Please provide ACCESS_KEY and SECRET_KEY", file=sys.stderr)
-    sys.exit()
-
-
-# Create a date for headers and the credential string
-t = datetime.datetime.utcnow()
-amzdate = t.strftime('%Y-%m-%dT%H:%M:%SZ') # Format date as YYYYMMDD'T'HHMMSS'Z'
-method = 'GET'
-service = 'AWSECommerceService'
-host = 'webservices.amazon.com'
-canonical_uri = '/onca/xml'
-endpoint = 'http://webservices.amazon.com/onca/xml'
+import sys
+import urllib.parse
+import xmltodict, json
 
 
-# Create the canonical query string. In this example, request
+def build_canonical_querystring(keywords, brand, search_index):
+    """
+    builds canonical querystring
+    """
 
-canonical_querystring = 'AWSAccessKeyId={}&'.format(ACCESS_KEY_ID)
-canonical_querystring += "AssociateTag={}&".format(MY_ASSOCIATE_TAG)
-canonical_querystring += 'Availability=Available&'
-canonical_querystring += 'Brand=Lacoste&'
-canonical_querystring += 'Keywords=shirts&'
-canonical_querystring += 'Operation=ItemSearch&'
-canonical_querystring += 'SearchIndex=FashionWomen&'
-canonical_querystring += 'Service=AWSECommerceService&'
-canonical_querystring += 'Timestamp={}&'.format(amzdate)
-canonical_querystring += "Version=2013-08-01"
+def amazon_pa_item_search_api(keywords=None, brand=None, search_index=None):
+    """
+    type(keywords) = list, []
+    makes request to amazon product advertising api and returns request
+    """
+    if all([ACCESS_KEY_ID, SECRET_ACCESS_KEY, MY_ASSOCIATE_TAG]) is False:
+        print("Please provide ACCESS_KEY and SECRET_KEY", file=sys.stderr)
+        sys.exit()
+    if any([keywords is not None, brand is not None]) is False:
+        print("Please provide at least a keyword or brand search value",
+              file=sys.stderr)
+        sys.exit()
 
-# create full canonical request
-canonical_request = (
-    "{}\n{}\n{}\n{}"
-    .format(method, host, canonical_uri, canonical_querystring)
-)
+    keywords = urllib.parse.quote_plus(','.join(keywords))
+    # SET VARIABLES
+    # Create a date for headers and the credential string
+    t = datetime.datetime.utcnow()
+    # format date as YYYY-MM-DD'T'HH:MM:SS'Z'
+    amzdate = t.strftime('%Y-%m-%dT%H:%M:%SZ')
+    # url encode dete
+    amzdate = urllib.parse.quote_plus(amzdate)
 
-signature = base64.b64encode(hmac.new(
-    SECRET_ACCESS_KEY.encode('utf-8'),
-    canonical_request.encode('utf-8'),
-    hashlib.sha256
+    method = 'GET'
+    service = 'AWSECommerceService'
+    host = 'webservices.amazon.com'
+    canonical_uri = '/onca/xml'
+    endpoint = 'http://webservices.amazon.com/onca/xml'
 
-).digest()).decode("utf-8")
+    # Create the canonical query string. In this example, request
+    canonical_querystring = 'AWSAccessKeyId={}&'.format(ACCESS_KEY_ID)
+    canonical_querystring += "AssociateTag={}&".format(MY_ASSOCIATE_TAG)
+    canonical_querystring += 'Availability=Available&'
+    canonical_querystring += 'Brand={}&'.format(brand)
+    canonical_querystring += 'Keywords={}&'.format(keywords)
+    canonical_querystring += 'Operation=ItemSearch&'
+    if search_index is not None:
+        canonical_querystring += 'SearchIndex={}&'.format(search_index)
+    canonical_querystring += 'Service=AWSECommerceService&'
+    canonical_querystring += 'Timestamp={}&'.format(amzdate)
+    canonical_querystring += "Version=2013-08-01"
 
-canonical_querystring += (
-    "&Signature={}".format(urllib.parse.quote_plus(signature))
-)
+    # create full canonical request based on previously set variables
+    canonical_request = (
+        "{}\n{}\n{}\n{}"
+        .format(method, host, canonical_uri, canonical_querystring)
+    )
 
-# ************* SEND THE REQUEST *************
-request_url = "{}?{}".format(endpoint, canonical_querystring)
+    # create signature
+    signature = base64.b64encode(hmac.new(
+        SECRET_ACCESS_KEY.encode('utf-8'),
+        canonical_request.encode('utf-8'),
+        hashlib.sha256
+    ).digest()).decode("utf-8")
 
-print('\nBEGIN REQUEST++++++++++++++++++++++++++++++++++++')
-print("Request URL = ", request_url)
-r = requests.get(request_url)
-print('\nRESPONSE++++++++++++++++++++++++++++++++++++')
-print('Response code: {}\n'.format(r.status_code))
-print(r.text)
+    # add signature to canonical query string
+    canonical_querystring += (
+        "&Signature={}".format(urllib.parse.quote_plus(signature))
+    )
+
+    # create SEND THE REQUEST
+    request_url = "{}?{}".format(endpoint, canonical_querystring)
+
+    print('-------------- BEGIN REQUEST ----------------')
+    print("Request URL = ", request_url)
+
+    # make request
+    response = requests.get(request_url)
+    return response
+
+def print_amazon_item(item):
+    """
+    prints amazon response item from items search
+    ItemLinks
+    """
+    for key, val in item.items():
+        if key == "ItemLinks":
+            itemlink = val.get("ItemLink")
+            for link_item in itemlink:
+                print("{} : {}".format(link_item.get("Description"),
+                                       link_item.get("URL"))
+                )
+        if key == "DetailPageURL":
+            detailpageurl = val
+            print("Page URL: {}".format(detailpageurl))
+
+def handle_item_search_response(response):
+    """
+    parses and prints items from item search response
+    """
+    print('-------------- RESPONSE -----------------')
+    print('Response code: {}\n'.format(response.status_code))
+    # convert xml to python objects
+    xml_dict = xmltodict.parse(response.text)
+    search_response = xml_dict.get("ItemSearchResponse")
+    search_items = search_response.get("Items").get("Item")
+    for item in search_items:
+        print_amazon_item(item)
+
+
+if __name__ == "__main__":
+    """
+    MAIN APP
+    """
+    response = amazon_pa_item_search_api(
+        ["shirts"], "Lacoste", "FashionWomen"
+    )
+    handle_item_search_response(response)
