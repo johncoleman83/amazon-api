@@ -4,12 +4,23 @@
   <div class="container">
     <section class="results" tabindex="0">
       <h1>Amazon Product Advertising API Search Results</h1>
-      {% for item_dict in amazon_objects %}
+      {% for amazon_object in amazon_objects %}
         <article>
-          {% for key, value in item_dict.items() %}
-          <h3>{{ key }}</h2>
-          <p>{{ value }}</p>
-          {% endfor %}
+          {% if 'Detail Page URL' in amazon_object %}
+	  <h3>{{ amazon_object['Detail Page URL'] }}</h3>
+	  {% endif %}
+          {% if 'Price' in amazon_object %}
+          <h3>Price: {{ amazon_object['Price'] }}</h3>
+	  {% endif %}
+          {% if 'Large Image' in amazon_object %}
+          <p>{{ amazon_object['Large Image'] }}</p>
+	  {% endif %}
+          {% if 'Technical Details' in amazon_object %}
+          <h3>{{ amazon_object['Technical Details'] }}</h3>
+	  {% endif %}
+          {% if 'ASIN' in amazon_object %}
+          <p>ASIN: {{ amazon_object['ASIN'] }}</p>
+	  {% endif %}
 	</article>
       {% endfor %}
     </section>

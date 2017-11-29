@@ -1,19 +1,29 @@
 # Amazon API
 
-product advertising API & aws IAM API
+product advertising API & aws IAM API. Demo: https://cecinestpasun.site/amazon/
 
 ## Description
 
-Python template for Amazon Product Advertising API
-(also includes example for Amazon IAM AWS API using IAM credentials)
-Demo: https://cecinestpasun.site/amazon/
+Python template for Amazon Product Advertising API. I built this for
+educational purposes only to learn about Amazon's API. The intended use of the
+Product Advertising API is to direct traffic to amazon.com. Amazon offers
+payment in exchange for this advertising based on how much traffic your website
+generates. The API response includes various links with the user's Association
+Tag and hashed key information in the query string. This is used to verify
+if the data from your API has generated traffic. See the Demo for real examples.
+
+(the source code also includes an unused example for Amazon IAM AWS API using
+Amazon AWS IAM credentials)
 
 ## Disclaimer
 
-* This is a DEMO only and not for commercial use
-* This app is not an official Amazon application or demo
+* This is a DEMO Application, for educational use
+* Not for commercial use
+* This is not an official Amazon product nor endorsed by Amazon
 * The author is in no way affiliated with Amazon
 * The author makes no money from this application
+  * unless, however, the users click the demo links/advertisements, which then
+  leads to an Amazon purchase.
 
 ## Environment
 
@@ -48,7 +58,7 @@ $ pip3 install -r requirements.txt
 
 ## Usage
 
-* main application:
+* main flask application:
 
 ```
 $ ./app.py
@@ -62,12 +72,12 @@ import amazon_api
 RESPONSE = amazon_api.item_search(
     [SEARCH_TERM, SEARCH_TERM], BRAND, SEARCH_INDEX
 )
-amazon_api.item_search_response_handler(RESPONSE)
+AMAZON_OBJECTS = amazon_api.item_search_response_handler(RESPONSE)
 ```
 * product advertising API for item Lookup
 ```
 RESPONSE = amazon_api.item_lookup(ASIN)
-amazon_api.item_lookup_response_handler(RESPONSE)
+AMAZON_OBJECTS = amazon_api.item_lookup_response_handler(RESPONSE)
 ```
 
 ## Helpful Links

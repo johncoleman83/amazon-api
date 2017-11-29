@@ -10,7 +10,7 @@ import sys
 from uuid import uuid4
 
 
-DEFAULT_ERROR = "Uknown Error, Please try again with new search terms"
+DEFAULT_ERROR = "Uknown Error, Please modify your search and try again"
 # flask setup
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -37,11 +37,13 @@ def format_amazon_objects(amazon_objects):
         return
     for amazon_object in amazon_objects:
         page_url = Markup(
-            '<a href="{}" target="_blank">Amazon Page URL</a>'
-            .format(amazon_object.get("Detail Page URL")))
+            '<a href="{}" target="_blank">{}</a>'
+            .format(amazon_object.get("Detail Page URL"),
+                    amazon_object.get("Title"))
+        )
         amazon_object["Detail Page URL"] = page_url
         technical_url = Markup(
-            '<a href="{}" target="_blank">Amazon Page URL</a>'
+            '<a href="{}" target="_blank">Technical Details</a>'
             .format(amazon_object.get("Technical Details")))
         amazon_object["Technical Details"] = technical_url
         image = Markup('<img src="{}" style="width: 100%;">'

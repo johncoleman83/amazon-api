@@ -42,12 +42,8 @@ main {
     color: #868484;
 }
 
-.index {
+.index, .results {
     background: #3b4465;
-}
-
-.results {
-    background: #ffffff;
 }
 
 div.container {

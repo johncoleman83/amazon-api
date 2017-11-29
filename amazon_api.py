@@ -107,7 +107,6 @@ def item_search(keywords=None, brand=None, search_index=None):
         print("There was an error in the request", file=sys.stderr)
         print("Status Code: {}".format(response.status_code), file=sys.stderr)
         print(response.text)
-        return None
     return response
 
 def build_item_lookup_querystring(asin=None):
@@ -155,7 +154,6 @@ def item_lookup(asin):
         print(request_url)
         print("Status Code: {}".format(response.status_code), file=sys.stderr)
         print(response.text)
-        return None
     return response
 
 def do_handle_amazon_search_item(item):
@@ -192,9 +190,13 @@ def response_is_valid(xml_dict):
     """
     checks if response has errors, and if so, handles that
     """
-    item_response = xml_dict.get("ItemSearchResponse")
+    error = xml_dict.get('ItemLookupErrorResponse', None)
+    if error is not None:
+        message = error.get('Error').get('Message')
+        return {"ERROR": message}
+    item_response = xml_dict.get("ItemSearchResponse", None)
     if item_response is None:
-        item_response = xml_dict.get("ItemLookupResponse")
+        item_response = xml_dict.get("ItemLookupResponse", None)
     request = (
         item_response.get("Items").get("Request")
     )
@@ -213,8 +215,10 @@ def item_lookup_response_handler(response):
     valid = response_is_valid(xml_dict)
     if valid is not True:
         return [valid]
-    search_item = xml_dict.get('ItemLookupResponse').get("Items").get("Item")
-    amazon_object = do_handle_amazon_search_item(search_item)
+    search_items = xml_dict.get('ItemLookupResponse').get("Items").get("Item")
+    if search_items is None:
+        return [{"ERROR": "Unknown Error"}]
+    amazon_object = do_handle_amazon_search_item(search_items)
     return [amazon_object]
 
 
