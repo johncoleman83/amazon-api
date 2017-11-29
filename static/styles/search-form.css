@@ -41,12 +41,6 @@ form label, form input {
     opacity: 0;
 }
 
-legend {
-    position: absolute;
-    top: 0;
-    left: -10000px;
-}
-
 label {
     padding-top: 15px;
     font-size: 14px;
