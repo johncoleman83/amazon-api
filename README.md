@@ -27,7 +27,7 @@ Amazon AWS IAM credentials)
 
 ## Environment
 
-* __OS:__ Linux Ubuntu 14.04 LTS
+* __OS:__ Linux Ubuntu 16.04.03 LTS (xenial)
 * __languages:__ Python 3.6.3
 * __API__: Amazon Product Advertising & AWS IAM
 
